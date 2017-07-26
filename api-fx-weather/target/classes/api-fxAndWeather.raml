@@ -1,0 +1,194 @@
+#%RAML 0.8
+title: FXANDWEATHERAPI
+version: 1.0
+
+baseUri: https://mocksvc.mulesoft.com/mocks/1b6163e6-996b-43cb-9990-fce8079646b1/api
+
+/FXToday:
+  displayName: Today
+  get:
+    description: Gets the today's exchange rate lists
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+             {
+                "base": "EUR",
+                "date": "18-07-2017",
+                "rates": {
+                    "AUD": 1.4565,
+                    "BGN": 1.9558,
+                    "BRL": 3.6623,
+                    "CAD": 1.4548,
+                    "CHF": 1.1025,
+                    "CNY": 7.8001,
+                    "CZK": 26.08,
+                    "DKK": 7.4371,
+                    "GBP": 0.8878,
+                    "HKD": 9.0176,
+                    "HRK": 7.4138,
+                    "HUF": 306.2,
+                    "IDR": 15368,
+                    "ILS": 4.1244,
+                    "INR": 74.337,
+                    "JPY": 129.46,
+                    "KRW": 1298.9,
+                    "MXN": 20.229,
+                    "MYR": 4.9513,
+                    "NOK": 9.3065,
+                    "NZD": 1.5713,
+                    "PHP": 58.597,
+                    "PLN": 4.2029,
+                    "RON": 4.56,
+                    "RUB": 68.168,
+                    "SEK": 9.5658,
+                    "SGD": 1.5793,
+                    "THB": 38.831,
+                    "TRY": 4.075,
+                    "USD": 1.1555,
+                    "ZAR": 14.946
+                     }
+              }
+/FXByDate:
+  displayName: ByDate   
+  get:
+    queryParameters:
+      date:
+        description: date  
+        type: string
+        example: 18-07-2017
+        required: true
+    description: Gets the exchange rate lists  by date
+    responses:
+          200:
+            body:
+              application/json:
+                example: |
+                 {
+                  "base": "EUR",
+                  "date": "18-07-2017",
+                  "rates": {
+                  "AUD": 1.5346,
+                  "CAD": 1.4577,
+                  "CHF": 1.6043,
+                  "CYP": 0.5767,
+                  "CZK": 36.063,
+                  "DKK": 7.4404,
+                  "EEK": 15.647,
+                  "GBP": 0.6246,
+                  "HKD": 7.8624,
+                  "HUF": 254.53,
+                  "ISK": 73.03,
+                  "JPY": 102.75,
+                  "KRW": 1140,
+                  "LTL": 4.0454,
+                  "LVL": 0.5916,
+                  "MTL": 0.4151,
+                  "NOK": 8.062,
+                  "NZD": 1.9331,
+                  "PLN": 4.1835,
+                  "ROL": 18273,
+                  "SEK": 8.552,
+                  "SGD": 1.6769,
+                  "SIT": 198.89,
+                  "SKK": 42.317,
+                  "TRL": 546130,
+                  "USD": 1.009,
+                  "ZAR": 6.2013
+                      }
+                  }
+          400:
+            body:
+              application/json:
+                example: |
+                  {"error":"Not found"}
+/FXByCurrencyCode:
+  displayName: ByCurrencyCode   
+  get:
+    queryParameters:
+      code:
+        description: code  
+        type: string
+        example: GBP
+        required: true
+    description: Gets the exchange rates for the currency code
+    responses:
+          200:
+            body:
+              application/json:
+                example: |
+                 {
+                  "base": "EUR",
+                  "date": "18-07-2017",
+                  "rates": {
+                  "AUD": 1.5346,
+                  "CAD": 1.4577,
+                  "CHF": 1.6043,
+                  "CYP": 0.5767,
+                  "CZK": 36.063,
+                  "DKK": 7.4404,
+                  "EEK": 15.647,
+                  "GBP": 0.6246,
+                  "HKD": 7.8624,
+                  "HUF": 254.53,
+                  "ISK": 73.03,
+                  "JPY": 102.75,
+                  "KRW": 1140,
+                  "LTL": 4.0454,
+                  "LVL": 0.5916,
+                  "MTL": 0.4151,
+                  "NOK": 8.062,
+                  "NZD": 1.9331,
+                  "PLN": 4.1835,
+                  "ROL": 18273,
+                  "SEK": 8.552,
+                  "SGD": 1.6769,
+                  "SIT": 198.89,
+                  "SKK": 42.317,
+                  "TRL": 546130,
+                  "USD": 1.009,
+                  "ZAR": 6.2013
+                      }
+                  }
+          400:
+            body:
+              application/json:
+                example: |
+                  {"error":"Not found"}
+/WByCityName:
+  displayName: ByCityName   
+  get:
+    queryParameters:
+      cityName:
+        description: CityName  
+        type: string
+        example: London
+        required: true
+    description: Gets the weather details for the city
+    responses:
+          200:
+            body:
+              application/json:
+                example: |
+                   {
+                      "coord": {
+                      "lon": -0.13,
+                      "lat": 51.51
+                        },
+                      "main": {
+                      "temp": 290.24,
+                      "pressure": 1016,
+                      "humidity": 77,
+                      "temp_min": 288.15,
+                      "temp_max": 292.15
+                           },
+                      "id": 2643743,
+                       "name": "London",
+                        "cod": 200
+                     }
+          400:
+            body:
+              application/json:
+                example: |
+                  {"error":"Not found"}

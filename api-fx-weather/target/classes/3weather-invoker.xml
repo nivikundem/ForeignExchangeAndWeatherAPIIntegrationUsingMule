@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+
+     <flow name="byCityName"> 
+         <set-variable variableName="cityName" value="#[message.inboundProperties.'http.query.params'.cityName]" doc:name="cityName"/>
+        
+        <http:request config-ref="Weather_HTTP_Request_Configuration" path="/weather" method="GET" doc:name="HTTP">       
+            <http:request-builder>
+                <http:query-param paramName="q" value="#[flowVars.cityName]"/>
+                <http:query-param paramName="APPID" value="${weather.api.key}"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Transform Message" metadata:id="b61ee439-e395-4614-bae9-51550e119beb">
+            <dw:input-payload doc:sample="sampleWeatherResponse.json" mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+  weather: {
+		temp: payload.main.temp - p("weather.celsius"),
+		pressure: payload.main.pressure,
+		humidity: payload.main.humidity,
+		temp_min: payload.main.temp_min - p("weather.celsius"),
+		temp_max: payload.main.temp_max - p("weather.celsius")
+	}	
+}]]></dw:set-payload>
+        </dw:transform-message> 
+   </flow> 
+   
+       
+</mule>

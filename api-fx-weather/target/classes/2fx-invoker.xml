@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+	xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+
+   
+    <flow name="ratesToday">  
+        <http:request config-ref="HTTP_Request_Configuration" path="/latest" method="GET" doc:name="HTTP"/>
+        <flow-ref name="Enrichment" doc:name="Enrichment"/>
+             
+       
+    </flow>
+    
+    
+    
+        <flow name="ratesByDate">
+        <set-variable variableName="date" value="#[message.inboundProperties.'http.query.params'.date]" doc:name="date"/>
+           
+          <scripting:transformer doc:name="CovertDateTo yyyy-MM-dd format">
+              <scripting:script engine="Groovy"><![CDATA[message.setProperty("date",(Date.parse( 'dd-MM-yyyy', message.getProperty("date",org.mule.api.transport.PropertyScope.INVOCATION) )).format( 'yyyy-MM-dd' ),org.mule.api.transport.PropertyScope.INVOCATION)
+	           ]]></scripting:script>
+          </scripting:transformer> 
+         
+        <http:request config-ref="HTTP_Request_Configuration" path="/#[flowVars.date]" method="GET" doc:name="HTTP"/>
+       
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	"base":payload.base,
+	"date":  ((payload.date as :string) as :date {format: "yyyy-MM-dd"}) as :string {format: "dd-MM-yyyy"}  ,
+	"rates" : payload.rates	
+}]]></dw:set-payload>
+        </dw:transform-message>    
+       
+    </flow>
+    
+    
+    
+        <flow name="ratesByCurrencyCode">
+        <set-variable variableName="base" value="#[message.inboundProperties.'http.query.params'.code]" doc:name="code"/>
+   
+        
+    <!--      <set-variable variableName="date1" value="#[message.inboundProperties.'http.query.params'.date.format('dd-MM-yyyy')]" doc:name="date"/>        -->
+         
+        <http:request config-ref="HTTP_Request_Configuration" path="/latest" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:query-param paramName="base" value="#[flowVars.base]"/>
+            </http:request-builder>
+        </http:request>
+       
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+{
+	"base":payload.base,
+	"date":  ((payload.date as :string) as :date {format: "yyyy-MM-dd"}) as :string {format: "dd-MM-yyyy"}  ,
+	"rates" : payload.rates	
+}]]></dw:set-payload>
+        </dw:transform-message>    
+       
+    </flow>
+    
+    
+    
+    
+</mule>
