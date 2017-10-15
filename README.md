@@ -30,4 +30,4 @@ Technologies and tools
 - Maven
 - Open Weather [https://openweathermap.org/api} and Fixer [http://fixer.io/]
 - Postman
-- ELK[Elastic search, logstash, kibana] stack for viewing loggers
+- ELK[Elastic search, logstash, kibana] stack for viewing loggers using Filebeat
