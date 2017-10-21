@@ -31,3 +31,4 @@ Technologies and tools
 - Open Weather [https://openweathermap.org/api} and Fixer [http://fixer.io/]
 - Postman
 - ELK[Elastic search, logstash, kibana] stack for viewing loggers using Filebeat
+- JMeter for performance testing
