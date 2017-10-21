@@ -1,0 +1,284 @@
+{
+  "odata.metadata": "http://mchwtatmsdb/Across/CrossTank/api/v1/$metadata#Translations",
+  "order": {
+    "type": "Book",
+    "title": "Java 8 in Action: Lambdas, Streams, and functional-style programming",
+    "details": "By Mario Fusco (2014)",
+    "futureyear": 2017,
+    "language": "Espanol"
+  },
+  "value": [
+    {
+      "SourceSentence": {
+        "Id": 2750901,
+        "Text": "ABCD",
+        "Language": 1033
+      },
+      "TargetSentence": {
+        "Id": 2750902,
+        "Text": "K�hlschrank:",
+        "Language": 1031
+      },
+      "Similarity": 100
+    },
+    {
+      "SourceSentence": {
+        "Id": 2750906,
+        "Text": "Refrigerator*",
+        "Language": 1033
+      },
+      "TargetSentence": {
+        "Id": 2750907,
+        "Text": "K�hlschrank*",
+        "Language": 1031
+      },
+      "Similarity": 100
+    }
+  ],
+  "contacts": [
+    {
+      "firstName": "Nivi",
+      "lastName": "Kundem",
+      "email": "nivi.kundem@acme.com",
+      "address": "Laprida 924"
+    },
+    {
+      "firstName": "Nivi",
+      "lastName": "Chandana",
+      "email": "nivi.chandana@acme.com",
+      "address": "Plymouthroad 924"
+    }
+  ],
+  "patents": [
+    {
+      "owner": "Victor Romero",
+      "categories": [
+        "book"
+      ]
+    },
+    {
+      "owner": "The Beatles",
+      "categories": [
+        "CD"
+      ]
+    },
+    {
+      "owner": "Luis Miguel",
+      "categories": [
+        "book",
+        "CD"
+      ]
+    }
+  ],
+  "user": {
+    "name": "Nivi",
+    "lastName": "Kundem"
+  },
+  "usingFunction1": 5,
+  "usingFunction2": [
+    1,
+    2,
+    3
+  ],
+  "person": {
+    "name": "Johnny Depp",
+    "gender": "male"
+  },
+  "entry": {
+    "person": {
+      "name": "Annie",
+      "gen": "male"
+    },
+    "sn": "Point"
+  },
+  "address": {
+    "street": {
+      "name": "Italia",
+      "number": 2164
+    },
+    "area": {
+      "zone": "San Isidro",
+      "name": "Martinez"
+    }
+  },
+  "firstperson": {
+    "name": "Nial",
+    "address": {
+      "street": {
+        "name": "Italia",
+        "number": 2164
+      },
+      "area": {
+        "zone": "San Isidro",
+        "name": "Martinez"
+      }
+    }
+  },
+  "slice": [
+    0,
+    1
+  ],
+  "last": [
+    2,
+    1,
+    0
+  ],
+  "allnames": [
+    "Nial",
+    "Italia",
+    "Martinez"
+  ],
+  "isNamePresent": false,
+  "isMetaData": true,
+  "users1": [
+    "JOHN",
+    "PETER",
+    "MATT"
+  ],
+  "users2": [
+    "0:JOHN",
+    "1:PETER",
+    "2:MATT"
+  ],
+  "priceList1": [
+    {
+      "0": {
+        "dollars": 9.99,
+        "localCurrency": 134.3655
+      }
+    },
+    {
+      "1": {
+        "dollars": 53,
+        "localCurrency": 712.85
+      }
+    },
+    {
+      "2": {
+        "dollars": 398.99,
+        "localCurrency": 5366.4155
+      }
+    }
+  ],
+  "priceList2": [
+    {
+      "0": {
+        "dollars": 9.99,
+        "localCurrency": 134.3655
+      }
+    },
+    {
+      "1": {
+        "dollars": 53,
+        "localCurrency": 712.85
+      }
+    },
+    {
+      "2": {
+        "dollars": 398.99,
+        "localCurrency": 5366.4155
+      }
+    }
+  ],
+  "priceList3": {
+    "basic": {
+      "dollars": 9.99,
+      "localCurrency": 134.3655
+    },
+    "premium": {
+      "dollars": 53,
+      "localCurrency": 712.85
+    },
+    "vip": {
+      "dollars": 398.99,
+      "localCurrency": 5366.4155
+    }
+  },
+  "result": {
+    "keys": [
+      "basic",
+      "premium",
+      "vip"
+    ],
+    "values": [
+      9.99,
+      53,
+      398.99
+    ]
+  },
+  "filtered": [
+    "d"
+  ],
+  "biggerThanTwo": [
+    3,
+    4,
+    5
+  ],
+  "myObject": {
+    "bb": "b"
+  },
+  "aa": [
+    "a",
+    "c"
+  ],
+  "currency1": "USD",
+  "currency2": {
+    "currency": "EUR"
+  },
+  "currency4": {
+    "currency": "EUR"
+  },
+  "currency5": {
+    "currency": "EUR"
+  },
+  "concat": {
+    "aa": "a",
+    "cc": "c"
+  },
+  "a": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "name": "MuleSoft",
+  "ContainsString1": true,
+  "a": "1,0,0,0",
+  "b": "2017-10-21",
+  "c": "true",
+  "a1": 1,
+  "rate": 0.03319672131271348427846595371694279,
+  "dateTime": "2015-07-07T16:40:32Z",
+  "localDateTime": "2015-10-07 16:40:32.000",
+  "isString": ":string",
+  "isExists": "Applicable",
+  "arrivalTime": "2017-09-07 16:40:00",
+  "language": "JAVA",
+  "flattenArray": [
+    3,
+    5,
+    9,
+    5,
+    154,
+    0.3
+  ],
+  "status": "GROOVY",
+  "noOfItems": 4,
+  "techInfo": {
+    "tech_data": {
+      "tech_number": 1,
+      "tech_type": "N/A"
+    },
+    "tech_data": {
+      "tech_number": 2,
+      "tech_type": "J",
+      "countryName": {
+        "country": "US"
+      }
+    }
+  },
+  "idUsingFunction": "NiviKundem",
+  "concat": "zabcd"
+}

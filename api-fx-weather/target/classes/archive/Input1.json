@@ -1,0 +1,162 @@
+{
+   "odata.metadata": "http://mchwtatmsdb/Across/CrossTank/api/v1/$metadata#Translations",
+     "title": "Java 8 in Action: Lambdas, Streams, and functional-style programming",
+  "author": "Mario Fusco",
+  "year": 2014,
+   "country": "Spain",
+   "arrivalTime" : "2017-09-07T16:40+01:00",
+   "language" : 0,
+   "technology" : "G",
+   "value": [
+     {
+       "SourceSentence": {
+         "Id": 2750901,
+         "Text": "ABCD",
+         "Language": 1033
+       },
+       "TargetSentence": {
+         "Id": 2750902,
+         "Text": "Kühlschrank:",
+         "Language": 1031
+       },
+       "Id": 2264817,
+       "Similarity": 100,
+       "CreationDate": "2009-02-25T12:56:15",
+       "Creator": "41e8d49d-0de7-4a96-a220-af96d94fe4b0",
+       "ModificationDate": "2009-02-25T12:56:15",
+       "Modificator": "00000000-0000-0000-0000-000000000000",
+       "State": "SmartInserted",
+       "Note": ""
+     },
+     {
+       "SourceSentence": {
+         "Id": 2750906,
+         "Text": "Refrigerator*",
+         "Language": 1033
+       },
+       "TargetSentence": {
+         "Id": 2750907,
+         "Text": "Kühlschrank*",
+         "Language": 1031
+       },
+       "Id": 2264822,
+       "Similarity": 100,
+       "CreationDate": "2009-02-25T12:55:46",
+       "Creator": "41e8d49d-0de7-4a96-a220-af96d94fe4b0",
+       "ModificationDate": "2009-02-25T12:55:46",
+       "Modificator": "00000000-0000-0000-0000-000000000000",
+       "State": "SmartInserted",
+       "Note": ""
+     }
+   ],
+   
+   
+   "users" : [
+    {
+   	"user" : {
+	    "name" : "Nivi Kundem",
+		"phone" : "152235465654",
+		"street" :"Laprida 924"	
+		}    
+	}   ,
+	{
+		"user" : {
+	    "name" : "Nivi Chandana",
+		"phone" : "152235462254",
+		"street" :"Plymouthroad 924"	    
+	} 
+	}
+ ],
+ 
+ 
+  "items": [
+      {
+        "type" : "book",
+        "label" : "Java Curiosities",
+        "author" : "Luis Miguel",
+        "image": "http://www.gravatar.com/avatar/a133c7d8d9245d063b136732272ea77e",
+        "url": "http://javacuriosities.blogspot.com.ar/"
+      },
+      {
+        "type" : "CD",
+        "label" : "No culpes a la noche",
+        "author" : "Luis Miguel",
+        "image": "http://www.gravatar.com/avatar/a133c7d8d9245d063b136732272ea77e"
+      },
+      {
+        "type" : "book",
+        "label" : "Mule in Action",
+        "author" : "Victor Romero"
+      },
+      {
+        "type" : "CD",
+        "label" : "Yesterday",
+        "author" : "The Beatles"
+      }
+    ],
+    
+    "user": 
+      {
+        "name" : "Nivi",
+        "lastName" : "Kundem",
+        "author" : "Luis Miguel",
+        "image": "http://www.gravatar.com/avatar/a133c7d8d9245d063b136732272ea77e",
+        "url": "http://javacuriosities.blogspot.com.ar/"
+      },
+      
+        "people": {
+    "size" : 1,
+    "person": {
+      "name": "Nial",
+      "address": {
+        "street": {
+          "name": "Italia",
+          "number": 2164
+        },
+        "area": {
+          "zone": "San Isidro",
+          "name": "Martinez"
+        }
+      }
+    }
+  },
+  
+  "prices" :{
+    "basic":9.99,
+    "premium":53,
+    "vip":398.99
+    },
+    
+ "arrayOfArrays" : [
+   [3,5],
+   [9,5],
+   [154,0.3]
+],
+
+    "techList": [
+      {
+        "countryDetails": {         
+          "country": "US"
+        },      
+        "type": "JAVA"
+      },
+      {
+        "countryDetails": {        
+          "country": "US"
+        },
+      
+        "type": "MICROSOFT"
+      },
+      {
+        "countryDetails": {        
+          "country": "US"         
+        },
+     
+        "type": "JAVA"
+      }
+    ]
+   
+     
+    
+     
+ }

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+   <!--  <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8099" basePath="dw" doc:name="HTTP Listener Configuration"/> -->
+    <file:connector name="File" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/>
+    <file:connector name="OutputFile" outputPattern="#[message.inboundProperties['originalFilename']]" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/>
+   <configuration doc:name="Configuration">
+		<expression-language>
+			<global-functions>
+				def getID() {
+				return "NiviKundem"
+				}
+				
+			</global-functions>
+		</expression-language>
+	</configuration>
+   
+    <flow name="dwFlow">
+        <file:inbound-endpoint path="${dir}in" connector-ref="File" responseTimeout="10000" doc:name="File" moveToDirectory="C:\Work\Softwares\APWS\dw\src\main\resources\archive"/>
+        <logger message="START : #[message.inboundProperties['originalFilename']]" level="INFO" doc:name="START"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <dw:transform-message doc:name="Transform Message" metadata:id="b25d6000-68c5-4775-b799-57a2f836e006">
+            <dw:input-payload mimeType="application/json" doc:sample="sample_data\json.json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%function words(name) name splitBy " "
+%function isNotEmpty(element) element != null and element != ""
+%function validateDate(date) date contains /^(\d{4})(-(\d{2}))(-(\d{2}))(T(\d{2}):(\d{2})(([\+\-]{1}\d{2}:\d{2})|Z))$/
+%function getFileType(value) "JAVA" when value == 0 otherwise "GROOVY"  
+%var toUser = (user) -> {name: user.name, lastName: user.lastName}
+%var language='Espanol'
+%var conversionRate=13.45
+%var numberTechs = sizeOf payload.techList
+%function getTechType(text) "J" when text == "JAVA" otherwise "N/A" 
+
+---
+{
+     "odata.metadata": payload."odata.metadata",  
+      order: {
+    type: "Book",
+    title: payload.title,
+    details: "By $(payload.author) ($(payload.year))",
+    futureyear : payload.year+3,
+    language:language
+  },
+   
+     
+     value: payload.value map ((value , indexOfValue) -> {
+         SourceSentence: {
+             Id: value.SourceSentence.Id,
+             Text: value.SourceSentence.Text as :string,
+             Language: value.SourceSentence.Language
+         },
+         TargetSentence: {
+             Id: value.TargetSentence.Id,
+             Text: value.TargetSentence.Text,
+             Language: value.TargetSentence.Language
+         },
+         Similarity: value.Similarity
+     }),
+     
+     contacts: payload.users.*user map using (parts =  words($.name)){
+  firstName: parts[0],
+  (secondName: parts[1]) when (sizeOf parts) > 2,
+  lastName: parts[-1],
+  email:((lower $.name) replace " " with ".") ++ "@acme.com",
+  address: $.street
+},
+
+patents : payload.items groupBy $.author pluck {
+  owner: $$,
+  categories: $.type
+},
+
+user: toUser(payload.user),
+"usingFunction1": using (x = 2) 3 + x,
+"usingFunction2":  using (x = 2) [1, x, 3],
+
+ person: using (user = "Johnny Depp", gender = "male") { 
+    name: user, 
+    gender: gender
+  },
+  entry: using (firstName = "Annie", lastName = "Point") {
+  person: using (user = firstName, gender = "male") {
+    name: user,
+      gen: gender 
+  },
+  sn: lastName
+},
+  address: payload.people.person.address,
+  firstperson : payload.people[1],
+  slice: [0,1,2][0..1],
+  last: [0,1,2][-1..0],
+   allnames: payload.people..name ,
+   isNamePresent: payload.name?,
+   isMetaData: payload."odata.metadata"?,
+   users1: ["john", "peter", "matt"] map  upper $,
+   users2: ["john", "peter", "matt"] map ((firstName, position) -> position ++ ":" ++ upper firstName),
+   priceList1: payload.prices map (
+  '$$':{
+    dollars: $,
+    localCurrency: $ * conversionRate
+  }
+),
+
+priceList2: payload.prices map ((money, position) ->
+  '$position':{
+    dollars: money,
+    localCurrency: money * conversionRate
+  }
+),
+
+priceList3: payload.prices mapObject ((money, category) ->
+  '$category':{
+    dollars: money,
+    localCurrency: money * conversionRate
+  }
+),
+
+result: {
+  keys: payload.prices pluck $$,
+  values: payload.prices pluck $
+},
+
+filtered: {
+  aa: "a", bb: "b", cc: "c", dd: "d"
+} filter $ == "d",
+  biggerThanTwo: [0, 1, 2, 3, 4, 5] filter $ > 2,
+  myObject: {aa: "a", bb: "b"} - "aa",
+  aa: ["a", "b", "c"] - "b",
+  currency1: payload.currency default "USD",
+ currency2: {
+  currency3: "USD"
+} when payload.country == "USA"
+otherwise
+{
+      currency: "EUR"
+},
+currency4:
+{
+  currency: "USD"
+} when payload.country == "USA" and payload.currency == "local"
+otherwise
+{
+      currency: "EUR"
+},
+currency5:
+{
+  currency: "EUR"
+} when payload.country == "Italy" or payload.country == "Germany" or payload.country == "Spain" or payload.country == "Portugal" or payload.country == "France" or payload.country == "Greece"
+otherwise
+{
+      currency: "USD"
+},
+
+concat: {aa: "a"} ++ {cc: "c"},
+
+a: [0, 1, 2] ++ [3, 4, 5],
+name: "Mule" ++ "Soft",
+ContainsString1: payload.title contains "Java",
+  a: 1000 as :string {format: "##,#"},
+  b: now as :string {format: "yyyy-MM-dd"},
+  c: true as :string,
+  a1: "1" as :number,
+  rate : (1 / 30.123456789) as :number {format: '#'},
+  dateTime: 1436287232 as :datetime,
+ localDateTime: "2015-10-07 16:40:32.000" as :localdatetime {format: "yyyy-MM-dd HH:mm:ss.SSS"},
+ 
+ isString: typeOf payload.title,
+
+ isExists: "Applicable" when  isNotEmpty(payload.title) otherwise "Not Applicable",
+ arrivalTime: (payload.arrivalTime as :datetime {format: "yyyy-MM-dd'T'HH:mmxxx"} as :string {format: "yyyy-MM-dd HH:mm:ss"}) when (isNotEmpty(payload.arrivalTime) and validateDate(payload.arrivalTime)) otherwise "1900-01-01 00:00:00",
+
+ language: getFileType( payload.language ),
+
+ flattenArray : flatten payload.arrayOfArrays,
+ 
+ status: "JAVA" when payload.technology == "J" otherwise (
+		"GROOVY" when payload.technology == "G" otherwise (
+			"PYTHON" when payload.technology == "P" otherwise (
+				"JQUERY" when payload.technology == "JQ" otherwise (
+					"None")
+				)
+			)
+		),
+		
+  noOfItems : sizeOf payload.items,
+  
+  (techInfo: {
+				( payload.techList map {
+					(
+						tech_data: {
+							tech_number: $$,
+							tech_type: getTechType(payload.techList[$$].type),
+							(countryName: {							
+								country:  payload.techList[$$].countryDetails.country 
+							}) when (getTechType(payload.techList[$$].type) == "J")
+						}
+
+					) when ($$ > 0)
+				})
+			}) when (numberTechs > 0),
+			
+	 idUsingFunction : getID(),
+	concat: ["a", "b", "c", "d"] reduce ((val, acc = "z") -> acc ++ val)
+  
+
+ }]]></dw:set-payload>
+        </dw:transform-message>
+         <object-to-string-transformer doc:name="Object to String"/>
+        <logger message="#[message.payloadAs(java.lang.String)]" doc:name="Logger"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        
+        <logger message="END" level="INFO" doc:name="END"/>
+        <file:outbound-endpoint path="${dir}out" outputPattern="#[message.inboundProperties['originalFilename']]" connector-ref="OutputFile" responseTimeout="10000" doc:name="File"/>
+    </flow>
+    <flow name="SchemaValidator">
+         <file:inbound-endpoint path="${dir}schemaValidator" moveToDirectory="${dir}archive" responseTimeout="10000" doc:name="JsonValidator" connector-ref="File"/>
+         <json:validate-schema schemaLocation="json_schemas/names.json" doc:name="Validate names/Names schema"/>   
+         <object-to-string-transformer doc:name="Object to String"/>         
+         <logger message="#[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>
+         <logger message="Json validated sucessefully" level="INFO" doc:name="Json validated sucessefully"/>
+         
+        <flow-ref name="Encoder" doc:name="Encoder"/>
+        <byte-array-to-string-transformer doc:name="Byte Array to String"/> 
+         <logger message="#[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>
+         <logger message="Json encoded sucessefully" level="INFO" doc:name="Json encoded sucessefully"/>
+           <flow-ref name="Decoder" doc:name="Decoder"/>
+        <byte-array-to-string-transformer doc:name="Byte Array to String"/> 
+          <logger message="#[message.payloadAs(java.lang.String)]" level="INFO" doc:name="Logger"/>
+         <logger message="Json decoded sucessefully" level="INFO" doc:name="Json decoded sucessefully"/>
+          <file:outbound-endpoint path="C:\Work\Softwares\APWS\dw\src\main\resources\out" outputPattern="#[message.inboundProperties['originalFilename']]" connector-ref="OutputFile" responseTimeout="10000" doc:name="File"/>
+    </flow>
+    
+        
+   <sub-flow name="Encoder">
+     <base64-encoder-transformer />
+     </sub-flow>
+     
+    <sub-flow name="Decoder">
+    	<base64-decoder-transformer encoding="UTF-8" mimeType="text/plain"/>
+    </sub-flow>
+    
+    
+</mule>

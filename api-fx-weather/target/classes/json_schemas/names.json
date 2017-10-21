@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#", 
+  "definitions": {}, 
+  "id": "http://example.com/example.json", 
+  "properties": {
+    "checked": {
+      "default": false, 
+      "description": "An explanation about the purpose of this instance.", 
+      "examples": [
+        "False"
+      ], 
+      "id": "/properties/checked", 
+      "title": "The checked schema.", 
+      "type": "boolean"
+    }, 
+    "dimensions": {
+      "id": "/properties/dimensions", 
+      "properties": {
+        "height": {
+          "default": 10, 
+          "description": "An explanation about the purpose of this instance.", 
+          "examples": [
+            "10"
+          ], 
+          "id": "/properties/dimensions/properties/height", 
+          "title": "The height schema.", 
+          "type": "integer"
+        }, 
+        "width": {
+          "default": 5, 
+          "description": "An explanation about the purpose of this instance.", 
+          "examples": [
+            "5"
+          ], 
+          "id": "/properties/dimensions/properties/width", 
+          "title": "The width schema.", 
+          "type": "integer"
+        }
+      }, 
+      "type": "object"
+    }, 
+    "id": {
+      "default": 1, 
+      "description": "An explanation about the purpose of this instance.", 
+      "examples": [
+        "1"
+      ], 
+      "id": "/properties/id", 
+      "title": "The id schema.", 
+      "type": "integer"
+    }, 
+    "name": {
+      "default": "A green door", 
+      "description": "An explanation about the purpose of this instance.", 
+      "examples": [
+        "A green door"
+      ], 
+      "id": "/properties/name", 
+      "title": "The name schema.", 
+      "type": "string"
+    }, 
+    "price": {
+      "default": 12.5, 
+      "description": "An explanation about the purpose of this instance.", 
+      "examples": [
+        "12.5"
+      ], 
+      "id": "/properties/price", 
+      "title": "The price schema.", 
+      "type": "number"
+    }, 
+    "tags": {
+      "id": "/properties/tags", 
+      "items": {
+        "default": "home", 
+        "description": "An explanation about the purpose of this instance.", 
+        "examples": [
+          "home"
+        ], 
+        "id": "/properties/tags/items", 
+        "title": "The 0 schema.", 
+        "type": "string"
+      }, 
+      "type": "array"
+    }
+  }, 
+  "type": "object"
+}
